@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "master-2022-anna": {
+      "hosting": {
+        "master": [
+          "master-2022-anna"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "master-2022-anna"
+  }
+}
