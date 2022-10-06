@@ -1,0 +1,41 @@
+<section class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="mt--5 height-fit">
+    <div class="form-container">
+      <h1 class="text-center">Sign In</h1>
+
+      <form [formGroup]="loginForm">
+        <div>
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" [formControlName]="'email'" #emailRef required />
+            <mat-error *ngIf="email.invalid">{{getErrorEmailMessage}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Enter password</mat-label>
+            <input matInput placeholder="Password" [formControlName]="'password'" #userPassword required />
+            <mat-error *ngIf="password.invalid">{{getErrorUserPasswordMessage}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <button class="d-block mx-auto my-3" mat-raised-button color="primary" (click)="login()">Log in</button>
+      </form>
+
+      <p class="text-center">Or</p>
+        <button class="d-block mx-auto my-3" mat-raised-button color="primary" (click)="loginWithGoogle()">
+          Log in with Google
+        </button>
+
+      <div class="text-center">
+        <a mat-button [routerLink]="['/forgot-password']" target="_blank">Forgot Password?</a>
+      </div>
+
+      <div class="d-block text-center">
+        <span>Don't have an account?</span>
+        <a mat-button [routerLink]="['/register-user']" class="sign-up-link">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</section>
