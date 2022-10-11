@@ -1,0 +1,5 @@
+<h1 mat-dialog-title *ngIf="data?.header || data?.title">{{data?.header || data?.title}}</h1>
+<div mat-dialog-content>{{data.text || data.content || data.message}}</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

@@ -6,6 +6,8 @@ import { SignUpComponent } from "./sign-up.component";
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from "@angular/router";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ModalModule } from "../modal/modal.modal";
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { RouterModule } from "@angular/router";
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        MatButtonModule
+        MatDialogModule,
+        MatButtonModule,
+        ModalModule
     ],
     declarations: [SignUpComponent],
 })

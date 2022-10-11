@@ -6,6 +6,14 @@
       <form [formGroup]="signUpForm">
         <div>
           <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Enter name</mat-label>
+            <input matInput placeholder="Name" [formControlName]="'name'" #userName required />
+            <mat-error *ngIf="name.invalid">{{getErrorUserNameMessage}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill" class="w-100">
             <mat-label>Email</mat-label>
             <input matInput placeholder="Email" [formControlName]="'email'" #emailRef required />
             <mat-error *ngIf="email.invalid">{{getErrorEmailMessage}}</mat-error>

@@ -11,6 +11,7 @@ export const environment = {
     authDomain: 'master-2022-anna.firebaseapp.com',
     messagingSenderId: '274019792269',
     measurementId: 'G-4ME8J743G4',
+    databaseURL: "https://master-2022-anna-default-rtdb.europe-west1.firebasedatabase.app"
   },
   production: false
 };
