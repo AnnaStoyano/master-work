@@ -10,3 +10,11 @@
     height: fit-content;
     max-height: fit-content;
 }
+
+.mat-button-base.mat-primary{
+    transition: linear 0.2s !important;
+
+    &:hover, &:focus {
+        background-color: #502c8e;
+    }
+}

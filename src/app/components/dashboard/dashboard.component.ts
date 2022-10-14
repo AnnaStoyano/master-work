@@ -10,10 +10,37 @@ import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss', '../../app.component.scss']
 })
 export class DashboardComponent implements OnInit {
   user!: User | null;
+  toDoLists: any[] = [
+    {
+      label: 'List 1',
+      tasks: ['Task1', 'Task2', 'Task3', 'Task4'],
+      createdData: '01.06.2022'
+    },
+    {
+      label: 'List 2',
+      tasks: ['Task1', 'Task2', 'Task3', 'Task4'],
+      createdData: '03.06.2022'
+    },
+    {
+      label: 'List 3',
+      tasks: ['Task1', 'Task2', 'Task3', 'Task4'],
+      createdData: '05.06.2022'
+    },
+    {
+      label: 'List 1',
+      tasks: ['Task1', 'Task2', 'Task3', 'Task4'],
+      createdData: '01.06.2022'
+    },
+    {
+      label: 'List 2',
+      tasks: ['Task1', 'Task2', 'Task3', 'Task4'],
+      createdData: '03.06.2022'
+    }
+  ];
 
   constructor(private _authService: AuthService,
     private _database: DatabaseService,
@@ -28,13 +55,13 @@ export class DashboardComponent implements OnInit {
       });
 
     this._authService.subjectSignOut.asObservable()
-    .subscribe((data) => {
-      if (!data.isError) {
-        this._router.navigate(['/sign-in']);
-      } else {
-        this._dialog.open(ModalComponent, { data });
-      }
-    });
+      .subscribe((data) => {
+        if (!data.isError) {
+          this._router.navigate(['/sign-in']);
+        } else {
+          this._dialog.open(ModalComponent, { data });
+        }
+      });
   }
 
   getInfo() {

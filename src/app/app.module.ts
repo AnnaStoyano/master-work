@@ -14,6 +14,7 @@ import { NotFindComponent } from './components/not-find/not-find.component';
 import { SignInModule } from './components/sign-in/sign-in.module';
 import { ForgotPasswordModule } from './components/forgot-password/forgot-password.module';
 import { SignUpModule } from './components/sign-up/sign-up.module';
+import { DashboardModule } from './components/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SignUpModule } from './components/sign-up/sign-up.module';
     AngularFireDatabaseModule,
     SignInModule,
     ForgotPasswordModule,
-    SignUpModule
+    SignUpModule,
+    DashboardModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

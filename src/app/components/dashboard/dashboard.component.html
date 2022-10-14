@@ -1,8 +1,29 @@
-<h1>Hi {{user?.displayName}}</h1>
+<header class="header">
+    <mat-toolbar class="header__toolbar justify-content-space-between">
+        <h1>My app</h1>
+        <nav class="main-nav">
+            <ul class="nav-list m-0 p-0">
+                <li class="nav-item">
+                    <button mat-raised-button color="primary" (click)="signOut()">SIGN OUT</button>
+                </li>
+            </ul>
+        </nav>
+    </mat-toolbar>
+</header>
 
-<h4>Add current task</h4>
-<button (click)="getInfo()">get Info</button>
-<button (click)="setInfo()">set Info</button>
+<main class="p-4">
+    <h2 class="greating">Hi {{user?.displayName}}!</h2>
+    <h3 class="m-0">Your lists:</h3>
 
-<button (click)="signOut()">sign OUT</button>
-
+    <ul class="todo-lists-previews row p-0">
+        <li *ngFor="let list of toDoLists; index as i;" class="list-preview col-12 col-md-4 mt-4">
+            <a class="list-preview__link px-4 py-3 d-block" href="#">
+                <div class="d-flex justify-content-between align-items-center w-100 mb-3">
+                    <h5 class="list-preview__label m-0">{{list.label}}</h5>
+                    <span class="list-preview__created">Created: {{list.createdData}}</span>
+                </div>
+                <span class="list-preview__count">{{list.tasks.length}} {{list.tasks.length > 0 ? 'tasks': 'task'}}</span>
+            </a>
+        </li>
+    </ul>
+</main>
