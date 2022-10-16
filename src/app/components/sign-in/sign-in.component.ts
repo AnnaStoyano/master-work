@@ -13,6 +13,7 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class SignInComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
+  hide: boolean = true;
 
   private signIn$!: Subscription;
 
@@ -29,7 +30,7 @@ export class SignInComponent implements OnInit, OnDestroy {
     this.signIn$ = this._authService.subjectSignIn.asObservable()
     .subscribe((info) => {
       if (!info.isError) {
-        this._router.navigate(['/dashboard', { id: info.content.uid }]);
+        this._router.navigate(['/dashboard/:', { id: info.content.uid }]);
       } else {
         this._dialog.open(ModalComponent, { data: info });
       }

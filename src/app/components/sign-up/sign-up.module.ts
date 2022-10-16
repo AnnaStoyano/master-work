@@ -8,7 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from "@angular/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { ModalModule } from "../modal/modal.modal";
-
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     imports: [
@@ -20,7 +20,8 @@ import { ModalModule } from "../modal/modal.modal";
         MatInputModule,
         MatDialogModule,
         MatButtonModule,
-        ModalModule
+        ModalModule,
+        MatIconModule
     ],
     declarations: [SignUpComponent],
 })

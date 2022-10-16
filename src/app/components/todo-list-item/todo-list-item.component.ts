@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-todo-list-item',
@@ -8,9 +6,18 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./todo-list-item.component.scss', '../../app.component.scss']
 })
 export class ToDoListItemComponent implements OnInit {
+  @Input('label') label: any;
+  @Input('created') created: any;
+  @Input('id') id: any;
+
+  @Output() deletedItemEvent = new EventEmitter<string>();
   constructor(){}
 
   ngOnInit(): void {
       
+  }
+
+  onRemove(): void {
+    this.deletedItemEvent.emit(this.id);
   }
 }

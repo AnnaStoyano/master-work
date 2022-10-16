@@ -1,0 +1,51 @@
+<h2 class="greating mb-4">Hi {{user?.displayName}}!</h2>
+
+<button mat-raised-button color="primary" class="mb-4" (click)="addList()">
+    <mat-icon aria-hidden="true" fontIcon="add"></mat-icon>
+    <span class="add-btn__title d-inline-block">Add list</span>
+</button>
+
+<ng-container *ngIf="showAddForm">
+    <div class="row m-0 mb-4">
+        <div class="addForm col-md-3 col p-3">
+            <mat-form-field class="w-100" appearance="fill">
+                <mat-label>List label</mat-label>
+                <input #listName matInput required [formControl]="newListName" required>
+                <mat-error *ngIf="newListName.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <div class="d-flex justify-content-end">
+                <button mat-button (click)="onCancel()">Cancel </button>
+                <button mat-button color="primary" (click)="onAdd()">Add</button>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<h3 class="m-0">Your lists:</h3>
+
+
+<ul *ngIf="toDoLists && toDoLists.length; else noList" class="todo-lists-previews row p-0">
+    <li *ngFor="let list of toDoLists; index as i;" class="list-preview col-12 col-md-4 mt-4">
+        <a class="list-preview__link preview__item px-4 py-3 d-block" [routerLink]="['./list', list.id]">
+            <div class="d-flex justify-content-between align-items-center w-100 mb-3">
+                <h5 class="list-preview__label preview__label m-0">{{list.label}}</h5>
+                <span class="list-preview__created preview__created">Created: {{list.createdData}}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <span class="list-preview__count">
+                    {{list.taskCount }} {{list.taskCount === 1 ? 'task':'tasks'}}
+                </span>
+                <button z-index="3" mat-icon-button class="remove_btn btn" (click)="onRemove($event, list.id)">
+                    <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
+                </button>
+            </div>
+        </a>
+    </li>
+</ul>
+
+
+<ng-template #noList>
+    <div class="noLists mt-5 text-center">
+        <p>There are no To-Do lists.</p>
+    </div>
+</ng-template>

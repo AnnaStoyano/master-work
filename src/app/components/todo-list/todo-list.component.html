@@ -1,1 +1,39 @@
-<p>LIST</p>
+<h2 class="text-center">{{listData.label}}</h2>
+
+<button mat-raised-button color="primary" class="mb-4" (click)="addTask()">
+    <mat-icon aria-hidden="true" fontIcon="add"></mat-icon>
+    <span class="add-btn__title d-inline-block">Add task</span>
+</button>
+
+<ng-container *ngIf="showAddForm">
+    <div class="row m-0 mb-4">
+        <div class="addForm col-md-3 col p-3">
+            <mat-form-field class="w-100" appearance="fill">
+                <mat-label>Task label</mat-label>
+                <input #taskName matInput required [formControl]="newTaskName" required>
+                <mat-error *ngIf="newTaskName.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <div class="d-flex justify-content-end">
+                <button mat-button (click)="onCancel()">Cancel </button>
+                <button mat-button color="primary" (click)="onAdd()">Add</button>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<h3 class="m-0 mb-3">Tasks:</h3>
+
+<div class="tasks_wrapper">
+    <ul class="tasks p-0" *ngIf="tasks && tasks.length; else noList">
+        <li *ngFor="let task of tasks; index as i;">
+            <app-todo-list-item [label]="task.label" [created]="task.createdData" [id]="task.id"
+                (deletedItemEvent)="onDeleteItem($event)"></app-todo-list-item>
+        </li>
+    </ul>
+</div>
+
+<ng-template #noList>
+    <div class="noLists mt-5 text-center">
+        <p>There are no tasks lists.</p>
+    </div>
+</ng-template>

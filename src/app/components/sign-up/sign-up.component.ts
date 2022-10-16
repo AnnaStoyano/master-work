@@ -4,7 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Auth } from 'firebase/auth';
 import { Subscription, take } from 'rxjs';
-import { AuthService, SignInfo } from '../../shared/services/auth.service';
+import { DatabaseService } from 'src/app/shared/services/database.service';
+import { AuthService} from '../../shared/services/auth.service';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm!: FormGroup;
+  hide: boolean = true;
 
   private _signUp$!: Subscription;
 

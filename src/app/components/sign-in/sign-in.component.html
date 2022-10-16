@@ -15,22 +15,18 @@
         <div>
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Enter password</mat-label>
-            <input matInput placeholder="Password" [formControlName]="'password'" #userPassword required />
+            <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [formControlName]="'password'"
+              #userPassword required />
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
             <mat-error *ngIf="password.invalid">{{getErrorUserPasswordMessage}}</mat-error>
           </mat-form-field>
         </div>
 
         <button class="d-block mx-auto my-3" mat-raised-button color="primary" (click)="login()">Log in</button>
       </form>
-
-      <p class="text-center">Or</p>
-        <button class="d-block mx-auto my-3" mat-raised-button color="primary" (click)="loginWithGoogle()">
-          Log in with Google
-        </button>
-
-      <div class="text-center">
-        <a mat-button [routerLink]="['/forgot-password']" target="_blank">Forgot Password?</a>
-      </div>
 
       <div class="d-block text-center">
         <span>Don't have an account?</span>

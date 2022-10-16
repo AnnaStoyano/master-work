@@ -15,6 +15,7 @@ import { SignInModule } from './components/sign-in/sign-in.module';
 import { ForgotPasswordModule } from './components/forgot-password/forgot-password.module';
 import { SignUpModule } from './components/sign-up/sign-up.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
+import { DashboardInfoModule } from './components/dashboard-info/dashboard-info.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
     SignInModule,
     ForgotPasswordModule,
     SignUpModule,
-    DashboardModule
+    DashboardModule,
+    DashboardInfoModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

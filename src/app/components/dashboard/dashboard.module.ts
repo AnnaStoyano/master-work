@@ -8,6 +8,7 @@ import { RouterModule } from "@angular/router";
 import { DashboardComponent } from "./dashboard.component";
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ToDoListModule } from "../todo-list/todo-list.module";
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { ToDoListModule } from "../todo-list/todo-list.module";
         MatInputModule,
         MatButtonModule,
         MatToolbarModule,
+        MatIconModule
     ],
     declarations: [DashboardComponent],
 })
