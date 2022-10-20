@@ -55,7 +55,6 @@ export class VoiceRecognitionService {
         this.recognition.start();
 
         this.recognition.addEventListener('end', (condition: any) => {
-            console.log('Condition', condition);
             if (this.isStoppedSpeechRecog) {
                 this.recognition.stop();
             } else {

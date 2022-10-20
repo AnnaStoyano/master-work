@@ -1,12 +1,12 @@
-import { NodeWithI18n } from '@angular/compiler';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'firebase/auth';
 import { mergeMap, Subscription } from 'rxjs';
 import { List, ListTask } from 'src/app/app.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DatabaseService } from 'src/app/shared/services/database.service';
+import { VoiceRecognitionService } from 'src/app/shared/services/voice-recognition.service';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -27,15 +27,23 @@ export class ToDoListComponent implements OnInit, OnDestroy {
   newTaskName: FormControl = new FormControl('', [Validators.required]);
   tasksDataJSON: { [key: string]: ListTask } = {};
   tasks: ListTask[] = [];
+  textCommand: string = '';
+
+  private _signedUserState$!: Subscription;
+  private _textRecognition$!: Subscription;
 
   @ViewChild('taskName', { static: false }) taskNameRef?: ElementRef<HTMLElement>;
-  @Output() taskAddEvent = new EventEmitter<string>();
+  @ViewChild('newTaskRef', { read: ElementRef }) addTaskRef!: ElementRef;
+  @ViewChild('cancelRef', { read: ElementRef }) cancelRef!: ElementRef;
+  @ViewChild('addRef', { read: ElementRef }) addRef!: ElementRef;
+  @ViewChildren('taskRef', { read: ElementRef }) tasksRef!: QueryList<ElementRef>;
 
-private _signedUserState$!: Subscription;
+  @Output() taskAddEvent = new EventEmitter<string>();
 
   constructor(private _database: DatabaseService,
     private _authService: AuthService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private _voice: VoiceRecognitionService) { }
 
   ngOnInit(): void {
     this.listId = this.route.snapshot.paramMap.get('id') as string;
@@ -61,6 +69,23 @@ private _signedUserState$!: Subscription;
 
         this.tasks = allTasks.filter(task => this.listData.id === task.listId);
       });
+
+    this._textRecognition$ = this._voice.onTextChange$()
+      .subscribe((command: string) => {
+        this.textCommand = command.toLowerCase();
+
+        if (this.textCommand === 'new task' || this.textCommand === 'new' || this.textCommand === 'add new task' || this.textCommand === 'ed new task' || this.textCommand === 'task' || this.textCommand.includes('create')) {
+          this.addTaskRef.nativeElement.click();
+        }
+
+        if (this.textCommand === 'add' || this.textCommand === 'ed') {
+          this.addRef.nativeElement.click();
+        }
+
+        if (this.textCommand === 'cancel' || this.textCommand === 'clear' || this.textCommand === 'remove') {
+          this.cancelRef.nativeElement.click();
+        }
+      })
   }
 
   ngOnDestroy(): void {
@@ -72,7 +97,7 @@ private _signedUserState$!: Subscription;
 
     setTimeout(() => {
       this.taskNameRef?.nativeElement.focus();
-  }, 0);
+    }, 0);
   }
 
   getErrorMessage(): string {
@@ -114,7 +139,7 @@ private _signedUserState$!: Subscription;
 
     this.listData = { ...this.listData, taskCount: this.listData.taskCount + 1 }
 
-    Object.defineProperty(this.tasksDataJSON, newTask.id, {value: newTask});
+    Object.defineProperty(this.tasksDataJSON, newTask.id, { value: newTask });
 
     this._database.writeUserTaskData(this.currentUser as User, newTask);
     this._database.updateListData(this.currentUser, this.listData);
@@ -128,7 +153,7 @@ private _signedUserState$!: Subscription;
 
     if (index) {
       this.tasks.splice(index, 1);
-      this._delete(this.tasksDataJSON,taskId);
+      this._delete(this.tasksDataJSON, taskId);
       taskCount -= 1;
     }
 
@@ -140,7 +165,7 @@ private _signedUserState$!: Subscription;
 
     if (index === 0 && this.tasksDataJSON) {
       this.tasks.splice(index, 1);
-      this._delete(this.tasksDataJSON,taskId);
+      this._delete(this.tasksDataJSON, taskId);
       taskCount = 0;
     }
 

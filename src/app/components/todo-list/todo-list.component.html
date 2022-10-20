@@ -1,8 +1,8 @@
 <h2 class="text-center">{{listData.label}}</h2>
 
-<button mat-raised-button color="primary" class="mb-4" (click)="addTask()">
+<button mat-raised-button color="primary" #newTaskRef class="mb-4" (click)="addTask()">
     <mat-icon aria-hidden="true" fontIcon="add"></mat-icon>
-    <span class="add-btn__title d-inline-block">Add task</span>
+    <span class="add-btn__title d-inline-block">Create new task</span>
 </button>
 
 <ng-container *ngIf="showAddForm">
@@ -14,8 +14,8 @@
                 <mat-error *ngIf="newTaskName.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
             <div class="d-flex justify-content-end">
-                <button mat-button (click)="onCancel()">Cancel </button>
-                <button mat-button color="primary" (click)="onAdd()">Add</button>
+                <button mat-button #cancelRef (click)="onCancel()">Cancel </button>
+                <button mat-button #addRef color="primary" (click)="onAdd()">Add</button>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
 <div class="tasks_wrapper">
     <ul class="tasks p-0" *ngIf="tasks && tasks.length; else noList">
         <li *ngFor="let task of tasks; index as i;">
-            <app-todo-list-item [label]="task.label" [created]="task.createdData" [id]="task.id"
+            <app-todo-list-item [label]="task.label" #taskRef [created]="task.createdData" [id]="task.id"
                 (deletedItemEvent)="onDeleteItem($event)"></app-todo-list-item>
         </li>
     </ul>

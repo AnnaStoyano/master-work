@@ -3,7 +3,7 @@
         <h5 class="task-preview__label preview__label m-0 text-center">{{label}}</h5>
         <div>
             <span class="task-preview__created preview__created">Created: {{created}}</span>
-            <button mat-icon-button class="remove_btn btn" (click)="onRemove()">
+            <button #removeRef mat-icon-button class="remove_btn btn" (click)="onRemove()">
                 <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
             </button>
         </div>

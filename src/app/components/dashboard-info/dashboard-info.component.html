@@ -39,7 +39,7 @@
                     {{list.taskCount }} {{list.taskCount === 1 ? 'task':'tasks'}}
                 </span>
                 <button #removeListRef z-index="3" mat-icon-button class="remove_btn btn"
-                    (click)="onRemove($event, list.id)">
+                    [class]="getNameListClass(list.label)" (click)="onRemove($event, list.id)">
                     <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
                 </button>
             </div>

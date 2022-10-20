@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe((command: string) => {
         this.textCommand = command.toLowerCase();
 
-        if (this.textCommand === 'dashboard' || this.textCommand === 'main page' || this.textCommand === 'all lists' || this.textCommand === 'lists') {
+        if (this.textCommand === 'dashboard' || this.textCommand === 'go dashboard' || this.textCommand === 'main page' || this.textCommand === 'all lists' || this.textCommand === 'lists') {
           this.dashboardRef.nativeElement.click();
         }
 

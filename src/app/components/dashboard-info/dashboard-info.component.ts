@@ -31,7 +31,8 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
     @ViewChild('newListRef', { read: ElementRef }) addListRef!: ElementRef;
     @ViewChild('cancelRef', { read: ElementRef }) cancelRef!: ElementRef;
     @ViewChild('addRef', { read: ElementRef }) addRef!: ElementRef;
-    @ViewChild('listRef', { read: ElementRef }) listsRef!: QueryList<ElementRef>;
+    @ViewChildren('listRef', { read: ElementRef }) listsRef!: QueryList<ElementRef>;
+    @ViewChildren('removeListRef', { read: ElementRef }) removeListRef!: QueryList<ElementRef>;
 
     constructor(private _authService: AuthService,
         private _database: DatabaseService,
@@ -60,8 +61,6 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
             .subscribe((command: string) => {
                 this.textCommand = command.toLowerCase();
 
-                console.log(this.listsRef);
-
                 if (this.textCommand === 'new list' || this.textCommand === 'new' || this.textCommand === 'add new list' || this.textCommand === 'ed new list' || this.textCommand === 'list' || this.textCommand.includes('create')) {
                     this.addListRef.nativeElement.click();
                 }
@@ -74,8 +73,21 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
                     this.cancelRef.nativeElement.click();
                 }
 
-                //console.log(this.listNameClasses);
-                //if(this.textCommand.includes())
+                if (this.textCommand.includes('open') || this.textCommand.includes('click')) {
+                    const listName = this.textCommand.split(' ').filter((item, i) => i !== 0).join('-');
+                    const lists = this.listsRef.toArray();
+                    const selectedList = lists.filter(list => list.nativeElement.classList.contains(listName));
+
+                    selectedList[0]?.nativeElement.click();
+                }
+
+                if (this.textCommand.includes('remove') || this.textCommand.includes('delete')) {
+                    const listName = this.textCommand.split(' ').filter((item, i) => i !== 0).join('-');
+                    const lists = this.removeListRef.toArray();
+                    const selectedList = lists.filter(list => list.nativeElement.classList.contains(listName));
+
+                    selectedList[0]?.nativeElement.click();
+                }
             });
     }
 
@@ -135,18 +147,14 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
 
     onRemove(event: Event, listId: string): void {
         event.preventDefault();
+        event.stopPropagation();
 
         const list = this.toDoLists.find(list => list.id === listId);
-        const index = list ? this.toDoLists.indexOf(list) : null;
+        const index: number = list ? this.toDoLists.indexOf(list) : -1;
 
-        if (index) {
-            this.toDoLists.splice(index, 1);
+        if (index > -1) {
             this._delete(this.listsDataJSON, listId);
-        }
-
-        if (index === 0) {
             this.toDoLists.splice(index, 1);
-            this.listsDataJSON = {};
         }
 
         this._database.updateListsData(this.user as User, this.listsDataJSON);
@@ -159,8 +167,8 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
     }
 
     private _delete(obj: { [key: string]: any }, prop: string): void {
-        if (obj[prop] && !obj[prop].length) {
-            delete obj[prop];
+        if (obj[prop]) {
+           delete obj[prop];
         }
     }
 }
