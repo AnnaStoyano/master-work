@@ -28,18 +28,17 @@ export class ToDoListItemComponent implements OnInit, OnDestroy {
     this._textRecognition$ = this._voice.onTextChange$()
       .subscribe((command: string) => {
         this.textCommand = command.toLowerCase();
-        console.log(this.removeRef);
         if (this.textCommand.includes('remove') || this.textCommand.includes('delete')) {
-          if(this.textCommand.includes(this.label.toLowerCase())) {
+          if (this.textCommand.includes(this.label.toLowerCase())) {
             this.removeRef?.nativeElement.click();
           }
-          
+
         }
       });
   }
 
   ngOnDestroy(): void {
-
+    this._textRecognition$.unsubscribe();
   }
 
   onRemove(): void {

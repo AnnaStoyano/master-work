@@ -93,6 +93,7 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this._signedUserState$.unsubscribe();
+        this._textRecognition$.unsubscribe();
     }
 
     addList(): void {
@@ -168,7 +169,7 @@ export class DashboardInfoComponent implements OnInit, OnDestroy {
 
     private _delete(obj: { [key: string]: any }, prop: string): void {
         if (obj[prop]) {
-           delete obj[prop];
+            delete obj[prop];
         }
     }
 }

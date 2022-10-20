@@ -25,10 +25,10 @@ export class VoiceRecognitionService {
     }
 
     init() {
-        const colors = ['anna', 'stoyanova', 'new', 'lists', 'gmail', 'sign', 'ua', 'vlad', 'coral', 'list', 'open','input', 'add',
-        'annastoyanova99@gmail.com'
+        const colors = ['anna', 'stoyanova', 'new', 'lists', 'gmail', 'sign', 'ua', 'vlad', 'coral', 'list', 'open', 'input', 'add',
+            'annastoyanova99@gmail.com'
 
-    ];
+        ];
         const grammar = `#JSGF V1.0; grammar colors; public <color> = ${colors.join(' | ')};`
 
         this.speechRecognitionList.addFromString(grammar, 1);

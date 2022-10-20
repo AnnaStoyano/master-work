@@ -6,7 +6,7 @@ import { Auth } from 'firebase/auth';
 import { Subscription, take } from 'rxjs';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { VoiceRecognitionService } from 'src/app/shared/services/voice-recognition.service';
-import { AuthService} from '../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -42,13 +42,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
     this._signUp$ = this._authService.subjectSignUp.asObservable()
-    .subscribe((data) => {
-      if (!data.isError) {
-        this._router.navigate(['/dashboard', { id: data.content.uid }]);
-      } else {
-        this._dialog.open(ModalComponent, { data });
-      }
-    });
+      .subscribe((data) => {
+        if (!data.isError) {
+          this._router.navigate(['/dashboard', { id: data.content.uid }]);
+        } else {
+          this._dialog.open(ModalComponent, { data });
+        }
+      });
 
     this._textRecognition$ = this._voice.onTextChange$()
       .subscribe((command: string) => {

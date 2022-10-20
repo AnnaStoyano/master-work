@@ -90,6 +90,7 @@ export class ToDoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._signedUserState$.unsubscribe();
+    this._textRecognition$.unsubscribe();
   }
 
   addTask(): void {

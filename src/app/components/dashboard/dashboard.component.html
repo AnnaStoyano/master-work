@@ -1,20 +1,20 @@
 <div class="container-dashboard">
-<header class="header">
-    <mat-toolbar class="header__toolbar justify-content-space-between">
-        <nav class="main-nav w-100">
-            <ul class="d-flex w-100 justify-content-between nav-list m-0 p-0">
-                <li class="nav-item">
-                    <a mat-button #dashboardRef [routerLink]="['/dashboard', userUid]">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <button mat-raised-button color="primary" #signOutRef (click)="signOut()">SIGN OUT</button>
-                </li>
-            </ul>
-        </nav>
-    </mat-toolbar>
-</header>
+    <header class="header">
+        <mat-toolbar class="header__toolbar justify-content-space-between">
+            <nav class="main-nav w-100">
+                <ul class="d-flex w-100 justify-content-between nav-list m-0 p-0">
+                    <li class="nav-item">
+                        <a mat-button #dashboardRef [routerLink]="['/dashboard', userUid]">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <button mat-raised-button color="primary" #signOutRef (click)="signOut()">SIGN OUT</button>
+                    </li>
+                </ul>
+            </nav>
+        </mat-toolbar>
+    </header>
 
-<main class="p-4">
-    <router-outlet></router-outlet>
-</main>
+    <main class="p-4">
+        <router-outlet></router-outlet>
+    </main>
 </div>
