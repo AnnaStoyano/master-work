@@ -1,13 +1,13 @@
-<section class="container d-flex justify-content-center align-items-center vh-100">
+<section class="container sign-up-container d-flex justify-content-center align-items-center">
   <div class="mt--5 height-fit">
     <div class="form-container">
       <h1 class="text-center">Sign Up</h1>
-
+      {{textCommand}}
       <form [formGroup]="signUpForm">
         <div>
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Enter name</mat-label>
-            <input matInput placeholder="Name" [formControlName]="'name'" #userName required />
+            <input matInput placeholder="Name" [formControlName]="'name'" #nameRef required />
             <mat-error *ngIf="name.invalid">{{getErrorUserNameMessage}}</mat-error>
           </mat-form-field>
         </div>
@@ -33,12 +33,12 @@
           </mat-form-field>
         </div>
 
-        <button class="d-block mx-auto my-3" mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
+        <button class="d-block mx-auto my-3" #signUpRef mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
       </form>
 
       <div class="d-block text-center">
         <span>Already have an account?</span>
-        <a mat-button [routerLink]="['/sign-in']" class="sign-up-link">Sign In</a>
+        <a mat-button [routerLink]="['/sign-in']" class="sign-up-link" #signInRef>Sign In</a>
       </div>
     </div>
   </div>

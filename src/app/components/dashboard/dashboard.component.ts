@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { VoiceRecognitionService } from 'src/app/shared/services/voice-recognition.service';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -13,13 +14,19 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   userUid: string = ':id';
-  
+  textCommand: string = '';
+
   private _signOut$!: Subscription;
   private _signedUserState$!: Subscription;
+  private _textRecognition$!: Subscription;
+
+  @ViewChild('signOutRef', { read: ElementRef }) signOutRef!: ElementRef;
+  @ViewChild('dashboardRef', { read: ElementRef }) dashboardRef!: ElementRef;
 
   constructor(private _authService: AuthService,
     private _dialog: MatDialog,
-    private _router: Router) {
+    private _router: Router,
+    private _voice: VoiceRecognitionService) {
   }
 
   ngOnInit(): void {
@@ -32,15 +39,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       });
 
-      this._signedUserState$ = this._authService.signedUserState$()
+    this._signedUserState$ = this._authService.signedUserState$()
       .subscribe((data) => {
         this.userUid = data?.uid || '';
+      });
+
+    this._textRecognition$ = this._voice.onTextChange$()
+      .subscribe((command: string) => {
+        this.textCommand = command.toLowerCase();
+
+        if (this.textCommand === 'dashboard' || this.textCommand === 'main page' || this.textCommand === 'all lists' || this.textCommand === 'lists') {
+          this.dashboardRef.nativeElement.click();
+        }
+
+        if (this.textCommand === 'sign out' || this.textCommand === 'sign out') {
+          this.signOutRef.nativeElement.click();
+        }
       });
   }
 
   ngOnDestroy(): void {
     this._signOut$.unsubscribe();
     this._signedUserState$.unsubscribe();
+    this._textRecognition$.unsubscribe();
   }
 
   signOut(): void {

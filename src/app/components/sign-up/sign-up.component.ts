@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Auth } from 'firebase/auth';
 import { Subscription, take } from 'rxjs';
 import { DatabaseService } from 'src/app/shared/services/database.service';
+import { VoiceRecognitionService } from 'src/app/shared/services/voice-recognition.service';
 import { AuthService} from '../../shared/services/auth.service';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -16,12 +17,21 @@ import { ModalComponent } from '../modal/modal.component';
 export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm!: FormGroup;
   hide: boolean = true;
+  textCommand: string = '';
 
   private _signUp$!: Subscription;
+  private _textRecognition$!: Subscription;
+
+  @ViewChild('nameRef', { static: true }) nameRef!: ElementRef<HTMLElement>;
+  @ViewChild('emailRef', { static: true }) emailRef!: ElementRef<HTMLElement>;
+  @ViewChild('userPassword', { static: true }) passwordRef!: ElementRef<HTMLElement>;
+  @ViewChild('signUpRef', { read: ElementRef }) signUpRef!: ElementRef;
+  @ViewChild('signInRef', { read: ElementRef }) signInRef!: ElementRef;
 
   constructor(private _authService: AuthService,
     private _dialog: MatDialog,
-    private _router: Router) { }
+    private _router: Router,
+    private _voice: VoiceRecognitionService) { }
 
   ngOnInit(): void {
     this.signUpForm = new FormGroup({
@@ -39,10 +49,36 @@ export class SignUpComponent implements OnInit, OnDestroy {
         this._dialog.open(ModalComponent, { data });
       }
     });
+
+    this._textRecognition$ = this._voice.onTextChange$()
+      .subscribe((command: string) => {
+        this.textCommand = command.toLowerCase();
+
+        if (this.textCommand === 'focus email' || this.textCommand === 'enter email') {
+          this.emailRef.nativeElement.focus();
+        }
+
+        if (this.textCommand === 'focus password' || this.textCommand === 'enter password') {
+          this.passwordRef.nativeElement.focus();
+        }
+
+        if (this.textCommand === 'focus name' || this.textCommand === 'enter name' || this.textCommand === 'enter user name') {
+          this.nameRef.nativeElement.focus();
+        }
+
+        if (this.textCommand === 'sign in' || this.textCommand === 'sigin' || this.textCommand === 'login') {
+          this.signInRef.nativeElement.click();
+        }
+
+        if (this.textCommand === 'sign up' || this.textCommand === 'signup') {
+          this.signUpRef.nativeElement.click();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this._signUp$.unsubscribe();
+    this._textRecognition$.unsubscribe();
   }
 
   get email(): FormControl {

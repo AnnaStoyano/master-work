@@ -1,8 +1,8 @@
-.mt--3{
+.mt--3 {
     margin-top: -1rem;
 }
 
-.mt--5{
+.mt--5 {
     margin-top: -3rem;
 }
 
@@ -11,10 +11,11 @@
     max-height: fit-content;
 }
 
-[mat-raised-button].mat-primary{
+[mat-raised-button].mat-primary {
     transition: linear 0.2s !important;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         background-color: #38088b;
         color: #fff;
     }
@@ -48,4 +49,10 @@
         border: 1px solid #c3c3c3;
         transform: scale(1.02);
     }
+}
+
+.footer .voice{
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
 }

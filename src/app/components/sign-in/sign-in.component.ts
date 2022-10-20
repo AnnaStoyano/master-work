@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
+import { VoiceRecognitionService } from 'src/app/shared/services/voice-recognition.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -14,12 +16,21 @@ import { ModalComponent } from '../modal/modal.component';
 export class SignInComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   hide: boolean = true;
+  textCommand: string = '';
 
   private signIn$!: Subscription;
+  private _textRecognition$!: Subscription;
+
+  @ViewChild('emailRef', { static: true }) emailRef!: ElementRef<HTMLElement>;
+  @ViewChild('userPassword', { static: true }) passwordRef!: ElementRef<HTMLElement>;
+  @ViewChild('loginButton', { read: ElementRef }) loginButtonRef!: ElementRef;
+  @ViewChild('signUp', { read: ElementRef }) signUpRef!: ElementRef;
 
   constructor(private _authService: AuthService,
     private _dialog: MatDialog,
-    private _router: Router) { }
+    private _router: Router,
+    private _voice: VoiceRecognitionService) {
+  }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -28,17 +39,39 @@ export class SignInComponent implements OnInit, OnDestroy {
     });
 
     this.signIn$ = this._authService.subjectSignIn.asObservable()
-    .subscribe((info) => {
-      if (!info.isError) {
-        this._router.navigate(['/dashboard/:', { id: info.content.uid }]);
-      } else {
-        this._dialog.open(ModalComponent, { data: info });
-      }
-    });
+      .subscribe((info) => {
+        if (!info.isError) {
+          this._router.navigate(['/dashboard/:', { id: info.content.uid }]);
+        } else {
+          this._dialog.open(ModalComponent, { data: info });
+        }
+      });
+
+    this._textRecognition$ = this._voice.onTextChange$()
+      .subscribe((command: string) => {
+        this.textCommand = command.toLowerCase();
+
+        if (this.textCommand === 'focus email' || this.textCommand === 'enter email') {
+          this.emailRef.nativeElement.focus();
+        }
+
+        if (this.textCommand === 'focus password' || this.textCommand === 'enter password') {
+          this.passwordRef.nativeElement.focus();
+        }
+
+        if (this.textCommand === 'login' || this.textCommand === 'log in') {
+          this.loginButtonRef.nativeElement.click();
+        }
+
+        if (this.textCommand === 'sign up' || this.textCommand === 'signup') {
+          this.signUpRef.nativeElement.click();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.signIn$.unsubscribe();
+    this._textRecognition$.unsubscribe();
   }
 
   get email(): FormControl {
@@ -81,5 +114,13 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   loginWithGoogle(): void {
     // this._authService.GoogleAuth();
+  }
+
+  startService() {
+    this._voice.start();
+  }
+
+  stopService() {
+    this._voice.stop();
   }
 }

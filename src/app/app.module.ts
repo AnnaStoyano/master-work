@@ -16,6 +16,7 @@ import { ForgotPasswordModule } from './components/forgot-password/forgot-passwo
 import { SignUpModule } from './components/sign-up/sign-up.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { DashboardInfoModule } from './components/dashboard-info/dashboard-info.module';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { DashboardInfoModule } from './components/dashboard-info/dashboard-info.
     ForgotPasswordModule,
     SignUpModule,
     DashboardModule,
-    DashboardInfoModule
+    DashboardInfoModule,
+    MatButtonModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

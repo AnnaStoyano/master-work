@@ -1,8 +1,10 @@
 <h2 class="greating mb-4">Hi {{user?.displayName}}!</h2>
 
-<button mat-raised-button color="primary" class="mb-4" (click)="addList()">
+{{textCommand}}
+
+<button #newListRef mat-raised-button color="primary" class="mb-4" (click)="addList()">
     <mat-icon aria-hidden="true" fontIcon="add"></mat-icon>
-    <span class="add-btn__title d-inline-block">Add list</span>
+    <span class="add-btn__title d-inline-block">Create new list</span>
 </button>
 
 <ng-container *ngIf="showAddForm">
@@ -14,8 +16,8 @@
                 <mat-error *ngIf="newListName.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
             <div class="d-flex justify-content-end">
-                <button mat-button (click)="onCancel()">Cancel </button>
-                <button mat-button color="primary" (click)="onAdd()">Add</button>
+                <button #cancelRef mat-button (click)="onCancel()">Cancel </button>
+                <button #addRef mat-button color="primary" (click)="onAdd()">Add</button>
             </div>
         </div>
     </div>
@@ -26,7 +28,8 @@
 
 <ul *ngIf="toDoLists && toDoLists.length; else noList" class="todo-lists-previews row p-0">
     <li *ngFor="let list of toDoLists; index as i;" class="list-preview col-12 col-md-4 mt-4">
-        <a class="list-preview__link preview__item px-4 py-3 d-block" [routerLink]="['./list', list.id]">
+        <a #listRef class="list-preview__link preview__item px-4 py-3 d-block" [class]="getNameListClass(list.label)"
+            [routerLink]="['./list', list.id]">
             <div class="d-flex justify-content-between align-items-center w-100 mb-3">
                 <h5 class="list-preview__label preview__label m-0">{{list.label}}</h5>
                 <span class="list-preview__created preview__created">Created: {{list.createdData}}</span>
@@ -35,7 +38,8 @@
                 <span class="list-preview__count">
                     {{list.taskCount }} {{list.taskCount === 1 ? 'task':'tasks'}}
                 </span>
-                <button z-index="3" mat-icon-button class="remove_btn btn" (click)="onRemove($event, list.id)">
+                <button #removeListRef z-index="3" mat-icon-button class="remove_btn btn"
+                    (click)="onRemove($event, list.id)">
                     <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
                 </button>
             </div>
